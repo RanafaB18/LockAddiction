@@ -1,6 +1,5 @@
-import sys
-
-import oschmod
+from sys import argv, exit
+from oschmod import set_mode
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
@@ -42,26 +41,26 @@ class Buttons(QPushButton):
 
 
 def set_permissions(url, reset_clicked=False):
-    '''
+    """
     Change permissions of the file or folder to prevent access from its abuser.
     NB. I should probably check what permissions the file has before it can be given full access.
     :param url: Path to file or folder. Inserted by dropEvent()
     :param reset_clicked: Self-explanatory
     :return: returns None
-    '''
+    """
     if reset_clicked:
-        oschmod.set_mode(url, 777) #777 gives full access (read, write, execute) to file or folder
+        set_mode(url, 777)  # 777 gives full access (read, write, execute) to file or folder
     else:
-        oschmod.set_mode(url, 000) #000 removes all rights to the file or folder
+        set_mode(url, 000)  # 000 removes all rights to the file or folder
     return None
 
 
 def menu_items():
-    '''
+    """
     List of deterrent numbers. The selected value is the number of times
     the deterrent dialog will appear.
     :return: Dropdown of deterrent number options
-    '''
+    """
     dropdown_list = QComboBox()
     dropdown_list.addItem("1")
     dropdown_list.addItem("3")
@@ -74,10 +73,10 @@ def menu_items():
 
 
 def settings():
-    '''
+    """
     Settings tab
     :return:
-    '''
+    """
     settings_tab = QWidget()
     info_label = QLabel()
     info_label.setText("Choose the number of times you want to be deterred.")
@@ -91,7 +90,7 @@ def settings():
 
 
 def calender_window():
-    '''Calender Tab'''
+    """Calender Tab"""
     calender_tab = QWidget()
     cal = MyCalenderWidget.MyCalender()
 
@@ -127,13 +126,12 @@ class Home(QWidget):
         self.setLayout(self.vertical_layout)
 
     def dump_window(self):
-        '''Drag and drop tab'''
+        """Drag and drop tab"""
         dump_tab = QWidget()
         vertical_layout = QVBoxLayout()
         title_label = DropLabel("Addiction Dump")
 
         reset_button = Buttons("Reset")
-
         reset_button.clicked.connect(lambda: self.deterrent_dialog())
 
         vertical_layout.addWidget(title_label)
@@ -154,8 +152,9 @@ class Home(QWidget):
         deterrent_number = int(menu_items().currentText())
         print(deterrent_number)
         for i in range(deterrent_number):
-            annoying_message = msg.question(self, "Wussying Out?", "I am going to make things very difficult for you. :)",
-                               QMessageBox.Retry | QMessageBox.Cancel)
+            annoying_message = msg.question(self, "Wussying Out?",
+                                            "I am going to make things very difficult for you. :)",
+                                            QMessageBox.Retry | QMessageBox.Cancel)
 
             if annoying_message == QMessageBox.Cancel:
                 break
@@ -168,34 +167,28 @@ class Home(QWidget):
                 msg_box.exec_()
                 if msg_box.clickedButton() == reset_button:
                     self.reset()
-        return None
 
     def reset(self):
-        '''Reset permissions, more like just give full permissions. Bad idea i will fix soon....probably'''
+        """Reset permissions, more like just give full permissions. Bad idea i will fix soon....probably"""
         for index in range(self.drop_list.count()):
             link = self.drop_list.item(index).text()
             set_permissions(link, reset_clicked=True)
         self.drop_list.clear()
-        return None
 
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
         event.accept()
-        return None
 
     def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
         event.accept()
-        return None
 
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         event.accept()
-        return None
 
     def dropEvent(self, event: QtGui.QDropEvent):
         link = event.mimeData().urls()[0].toLocalFile()
         set_permissions(link)
         self.drop_list.addItem(link)
         event.accept()
-        return None
 
 
 class ListWidget(QListWidget):
@@ -214,7 +207,7 @@ class ListWidget(QListWidget):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     window = Home()
     window.show()
-    sys.exit(app.exec_())
+    exit(app.exec_())
