@@ -151,7 +151,7 @@ class Home(QWidget):
         if len(self.drop_list) == 0:
             return None
         msg = QMessageBox()
-        deterrent_number = int(self.dropdown_list.currentText())
+        deterrent_number = int(menu_items().currentText())
         print(deterrent_number)
         for i in range(deterrent_number):
             annoying_message = msg.question(self, "Wussying Out?", "I am going to make things very difficult for you. :)",
