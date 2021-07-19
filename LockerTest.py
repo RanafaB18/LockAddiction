@@ -152,7 +152,7 @@ class Home(QWidget):
         deterrent_number = int(menu_items().currentText())
         print(deterrent_number)
         for i in range(deterrent_number):
-            annoying_message = msg.question(self, "Wussying Out?",
+            annoying_message = msg.question(self, "Wussing Out?",
                                             "I am going to make things very difficult for you. :)",
                                             QMessageBox.Retry | QMessageBox.Cancel)
 
