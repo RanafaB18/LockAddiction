@@ -7,3 +7,19 @@ Changing system time breaks everything :(
 Plan to remove that exploit by drawing time from the internet when the user is online.
 It will run in the background.
 First Project. :) :(
+
+## Get started
+
+Clone the project
+```
+git clone https://github.com/RanafaB18/LockAddiction
+```
+Install the requirements
+
+```
+pip install -r requirements.txt
+```
+Run the main file
+```
+python LockerTest.py
+```
